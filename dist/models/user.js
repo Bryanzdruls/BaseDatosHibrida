@@ -14,6 +14,7 @@ const User = connection_1.default.define('User', {
     },
     state: {
         type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: 1,
     }
 });
 exports.default = User;

@@ -10,6 +10,7 @@ const User = db.define('User',{
     },
     state: {
         type: DataTypes.BOOLEAN,
+        defaultValue: 1,
     }
 });
 export default User;

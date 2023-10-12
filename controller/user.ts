@@ -48,6 +48,16 @@ export const createUser = async(req: Request, res: Response)=>{
     const {name,email} = req.body;
 
     try {
+        const existEmail = await User.findOne({
+            where:{
+                email: req.body.email,
+            }
+        });
+        if (existEmail) {
+            return res.status(400).json({
+                msg:'Email already exists'
+            })
+        }
         const user = await User.create({name,email});
         
         res.status(200).json({
@@ -62,20 +72,51 @@ export const createUser = async(req: Request, res: Response)=>{
     }
 }
 
-export const updateUser = (req: Request, res: Response)=>{
+export const updateUser = async(req: Request, res: Response)=>{
     const {id} = req.params;
-    const {body} = req.params;
-
-    res.json({
-        msg:'updateUser',
-        body
-    })
+    const {body} = req;
+    try {
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({
+                msg:'User doesnt exist'
+            })
+        }
+        await user.update(body);
+        
+        res.status(200).json({
+            msg: 'user updated',
+            user,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg:'internal server error'
+        })
+    }
 }
 
-export const deleteUser = (req: Request, res: Response)=>{
+export const deleteUser = async(req: Request, res: Response)=>{
     const {id} = req.params;
-    res.json({
-        msg:'deleteUser',
-        id
-    })
+    
+    try {
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({
+                msg:'User doesnt exist'
+            })
+        }
+        
+        await user.update({state: false});
+        
+        res.status(200).json({
+            msg: 'user updated',
+            user,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg:'internal server error'
+        })
+    }
 }

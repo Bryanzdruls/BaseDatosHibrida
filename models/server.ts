@@ -1,6 +1,7 @@
 import express, {Application} from 'express'
-import * as userRoutes from '../routes/user';
+import  * as userRoutes from '../routes/user';
 import cors from 'cors';
+
 import db from '../db/connection';
 export class Server {
     private app: Application;
@@ -12,13 +13,13 @@ export class Server {
     constructor(){
         this.app =express();
         this.port =process.env.PORT || '8000';
-
-        //rutas
-        this.routes();
-        //middlewares
-        this.middlewares();
         //db
         this.connection();
+        //middlewares
+        this.middlewares();
+        //rutas
+        this.routes();
+        
     }
     middlewares() {
 

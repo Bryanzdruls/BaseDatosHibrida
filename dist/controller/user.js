@@ -55,6 +55,16 @@ exports.getUser = getUser;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email } = req.body;
     try {
+        const existEmail = yield user_1.default.findOne({
+            where: {
+                email: req.body.email,
+            }
+        });
+        if (existEmail) {
+            return res.status(400).json({
+                msg: 'Email already exists'
+            });
+        }
         const user = yield user_1.default.create({ name, email });
         res.status(200).json({
             msg: 'user created',
@@ -69,21 +79,51 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
-const updateUser = (req, res) => {
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { body } = req.params;
-    res.json({
-        msg: 'updateUser',
-        body
-    });
-};
+    const { body } = req;
+    try {
+        const user = yield user_1.default.findByPk(id);
+        if (!user) {
+            return res.status(404).json({
+                msg: 'User doesnt exist'
+            });
+        }
+        yield user.update(body);
+        res.status(200).json({
+            msg: 'user updated',
+            user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'internal server error'
+        });
+    }
+});
 exports.updateUser = updateUser;
-const deleteUser = (req, res) => {
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    res.json({
-        msg: 'deleteUser',
-        id
-    });
-};
+    try {
+        const user = yield user_1.default.findByPk(id);
+        if (!user) {
+            return res.status(404).json({
+                msg: 'User doesnt exist'
+            });
+        }
+        yield user.update({ state: false });
+        res.status(200).json({
+            msg: 'user updated',
+            user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'internal server error'
+        });
+    }
+});
 exports.deleteUser = deleteUser;
 //# sourceMappingURL=user.js.map

@@ -47,12 +47,12 @@ class Server {
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
-        //rutas
-        this.routes();
-        //middlewares
-        this.middlewares();
         //db
         this.connection();
+        //middlewares
+        this.middlewares();
+        //rutas
+        this.routes();
     }
     middlewares() {
         // CORS
