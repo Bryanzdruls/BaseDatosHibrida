@@ -37,18 +37,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 const express_1 = __importDefault(require("express"));
-const userRoutes = __importStar(require("../routes/user"));
+const eventosRoutes = __importStar(require("../routes/eventos"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+const conectionMongo_1 = __importDefault(require("../db/conectionMongo"));
+const relacionesSql_1 = __importDefault(require("../db/relacionesSql"));
 class Server {
     constructor() {
         this.apiPaths = {
-            users: '/api/users'
+            usuario: '/api/usuario',
+            eventos: '/api/eventos'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
         //db
-        this.connection();
+        this.connectionSQL();
+        this.connectionMONGO();
         //middlewares
         this.middlewares();
         //rutas
@@ -63,18 +67,30 @@ class Server {
         this.app.use(express_1.default.static('public'));
     }
     routes() {
-        this.app.use(this.apiPaths.users, userRoutes.default);
+        this.app.use(this.apiPaths.eventos, eventosRoutes.default);
     }
     listen() {
         this.app.listen(this.port, () => {
-            console.log('server in port ' + this.port);
+            console.log('Servidor en puerto ' + this.port);
         });
     }
-    connection() {
+    connectionSQL() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
-                console.log('DB ONLINE');
+                console.log('DB SQL ONLINE');
+                //PEPELIGRO
+                yield (0, relacionesSql_1.default)();
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
+    connectionMONGO() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield (0, conectionMongo_1.default)();
             }
             catch (error) {
                 throw new Error(error);

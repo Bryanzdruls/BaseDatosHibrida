@@ -1,10 +1,10 @@
 import {Sequelize} from 'sequelize';
 
 
-const db = new Sequelize('node','root', 'mysql', {
+const db = new Sequelize('finalBD2','postgres', '123', {
     host: 'localhost',
-    dialect: 'mysql',
-    //logging:false,
+    dialect: 'postgres',
+    logging:false,
 });
 
 export default db;

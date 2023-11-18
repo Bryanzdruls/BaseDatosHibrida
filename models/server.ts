@@ -1,20 +1,24 @@
-import express, {Application} from 'express'
-import  * as userRoutes from '../routes/user';
+import express, {Application} from 'express';
+import  * as eventosRoutes from '../routes/eventos';
 import cors from 'cors';
 
-import db from '../db/connection';
+import dbSql from '../db/connection';
+import dbMongo from '../db/conectionMongo'
+import relacionar from '../db/relacionesSql';
 export class Server {
     private app: Application;
     private port: string;
     private apiPaths= {
-        users: '/api/users'
+        usuario: '/api/usuario',
+        eventos: '/api/eventos'
     };
 
     constructor(){
         this.app =express();
         this.port =process.env.PORT || '8000';
         //db
-        this.connection();
+        this.connectionSQL();
+        this.connectionMONGO();
         //middlewares
         this.middlewares();
         //rutas
@@ -34,18 +38,27 @@ export class Server {
         this.app.use( express.static('public') );
     }
     routes(){
-        this.app.use(this.apiPaths.users, userRoutes.default)
+        this.app.use(this.apiPaths.eventos, eventosRoutes.default)
     }
     listen(){
         this.app.listen(this.port, ()=>{
-            console.log('server in port '+ this.port);    
+            console.log('Servidor en puerto '+ this.port);    
         })
     }
-    async connection(){
+    async connectionSQL(){
         try {
-            await db.authenticate();
-            console.log('DB ONLINE');
-            
+            await dbSql.authenticate();
+            console.log('DB SQL ONLINE');
+            //PEPELIGRO
+            await relacionar();      
+        } catch (error:any) {
+            throw new Error(error);            
+        }
+    }
+    async connectionMONGO(){
+        try {
+            await dbMongo();
+
         } catch (error:any) {
             throw new Error(error);            
         }

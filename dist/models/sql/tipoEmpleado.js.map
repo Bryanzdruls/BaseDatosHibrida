@@ -1,0 +1,1 @@
+{"version":3,"file":"tipoEmpleado.js","sourceRoot":"","sources":["../../../models/sql/tipoEmpleado.ts"],"names":[],"mappings":";;;;;AAAA,yCAAmC;AACnC,qEAAoC;AAEpC,MAAM,aAAa,GAAG,oBAAE,CAAC,MAAM,CAAC,gBAAgB,EAAC;IAC7C,MAAM,EAAE;QACJ,UAAU,EAAE,IAAI;QAChB,IAAI,EAAE,qBAAS,CAAC,MAAM;KACzB;CACJ,EAAC;IACE,SAAS,EAAC,gBAAgB;IAC1B,UAAU,EAAC,KAAK;CACnB,CAAC,CAAC;AACH,kBAAe,aAAa,CAAC"}
