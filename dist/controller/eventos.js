@@ -139,10 +139,12 @@ const createEvento = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.createEvento = createEvento;
 const eliminarEvento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
     try {
-        const eventos = yield events_1.default.find();
+        const evento = yield events_1.default.findByIdAndDelete(id);
         res.json({
-            eventos,
+            msg: 'Evento borrado correctamente',
+            eventoBorrado: evento,
             body: req.body,
         });
     }

@@ -20,6 +20,7 @@ export const getEvento = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const getEventos = async (req: Request, res: Response) => {
   try {
     const eventos = await Evento.find();
@@ -132,10 +133,12 @@ export const createEvento = async (req: Request, res: Response) => {
 
 
 export const eliminarEvento = async (req: Request, res: Response) => {
+  const {id} = req.params
   try {
-    const eventos = await Evento.find();
+    const evento = await Evento.findByIdAndDelete(id);
     res.json({
-      eventos,
+      msg: 'Evento borrado correctamente',
+      eventoBorrado: evento,
       body: req.body,
     });
   } catch (error) {

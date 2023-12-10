@@ -5,6 +5,7 @@ import cors from 'cors';
 import dbSql from '../db/connection';
 import dbMongo from '../db/conectionMongo'
 import relacionar from '../db/relacionesSql';
+
 export class Server {
     private app: Application;
     private port: string;
